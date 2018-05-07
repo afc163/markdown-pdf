@@ -22,6 +22,7 @@ function markdownpdf (opts) {
   opts.paperFormat = opts.paperFormat || 'A4'
   opts.paperOrientation = opts.paperOrientation || 'portrait'
   opts.paperBorder = opts.paperBorder || '2cm'
+  opts.logger = opts.logger || console.log
   opts.renderDelay = opts.renderDelay == null ? 0 : opts.renderDelay
   opts.loadTimeout = opts.loadTimeout == null ? 10000 : opts.loadTimeout
   opts.preProcessMd = opts.preProcessMd || function () { return through() }
@@ -116,8 +117,8 @@ function markdownpdf (opts) {
         ]
 
         childProcess.execFile(opts.phantomPath, childArgs, function (err, stdout, stderr) {
-          // if (stdout) console.log(stdout)
-          // if (stderr) console.error(stderr)
+          if (stdout) console.log(stdout)
+          if (stderr) logger(stderr)
           if (err) return outputStream.emit('error', err)
           fs.createReadStream(tmpPdfPath).pipe(outputStream)
         })
