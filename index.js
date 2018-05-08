@@ -118,7 +118,7 @@ function markdownpdf (opts) {
 
         childProcess.execFile(opts.phantomPath, childArgs, function (err, stdout, stderr) {
           if (stdout) console.log(stdout)
-          if (stderr) logger(stderr)
+          if (stderr) opts.logger(stderr)
           if (err) return outputStream.emit('error', err)
           fs.createReadStream(tmpPdfPath).pipe(outputStream)
         })
